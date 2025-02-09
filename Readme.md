@@ -18,7 +18,7 @@ Morse code is a method of encoding text using sequences of dots (short signals) 
 ## Installation
 1. Clone the repository: 
     ```bash
-   git clone
+   git clone https://github.com/AritraC1/MorseCodeTranslator.git
    ```
 2. Open the project in your IDE.
 3. Build and run the project.

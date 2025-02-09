@@ -2,7 +2,7 @@ import javax.sound.sampled.*;
 import java.util.HashMap;
 
 public class MorseCodeController {
-    private HashMap<Character, String> morseCodeMap;
+    private final HashMap<Character, String> morseCodeMap;
 
     public MorseCodeController(){
         morseCodeMap = new HashMap<>();
@@ -104,7 +104,7 @@ public class MorseCodeController {
         StringBuilder translatedText = new StringBuilder();
         for(Character letter : textToTranslate.toCharArray()){
             // translate the letter and then append to the returning value (to be displayed to the GUI)
-            translatedText.append(morseCodeMap.get(letter) + " ");
+            translatedText.append(morseCodeMap.get(letter)).append(" ");
         }
         return translatedText.toString();
     }

@@ -1,14 +1,12 @@
 import javax.sound.sampled.LineUnavailableException;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 // key listener is used here so that I can listen to key presses (typing)
 public class MorseCodeTranslatorGUI extends JFrame implements KeyListener {
-    private MorseCodeController morseCodeController;
+    private final MorseCodeController morseCodeController;
 
     // textInputArea - user input (text to be translated)
     // morseCodeArea - translated text into morse code
@@ -103,31 +101,23 @@ public class MorseCodeTranslatorGUI extends JFrame implements KeyListener {
         // play sound button
         JButton playSoundButton = new JButton("Play Sound");
         playSoundButton.setBounds(210, 680, 100, 30);
-        playSoundButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                // disable the play button (prevents the sound from getting interrupted)
-                playSoundButton.setEnabled(false);
+        playSoundButton.addActionListener(e -> {
+            // disable the play button (prevents the sound from getting interrupted)
+            playSoundButton.setEnabled(false);
 
-                Thread playMorseCodeThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // attempt to play the morse code sound
-                        try{
-                            String[] morseCodeMessage = morseCodeArea.getText().split(" ");
-                            morseCodeController.playSound(morseCodeMessage);
-                        }catch(LineUnavailableException lineUnavailableException){
-                            lineUnavailableException.printStackTrace();
-                        }catch(InterruptedException interruptedException){
-                            interruptedException.printStackTrace();
-                        }finally{
-                            // enable play sound button
-                            playSoundButton.setEnabled(true);
-                        }
-                    }
-                });
-                playMorseCodeThread.start();
-            }
+            Thread playMorseCodeThread = new Thread(() -> {
+                // attempt to play the morse code sound
+                try{
+                    String[] morseCodeMessage = morseCodeArea.getText().split(" ");
+                    morseCodeController.playSound(morseCodeMessage);
+                }catch(LineUnavailableException | InterruptedException lineUnavailableException){
+                    lineUnavailableException.printStackTrace();
+                } finally{
+                    // enable play sound button
+                    playSoundButton.setEnabled(true);
+                }
+            });
+            playMorseCodeThread.start();
         });
 
         // add to GUI
